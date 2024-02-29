@@ -38,7 +38,6 @@ class User(AbstractUser):
 
     email = models.EmailField(unique=True, verbose_name='почта')
     is_active = models.BooleanField(default=False, verbose_name='активен')
-    key = models.CharField(max_length=100, **NULLABLE, verbose_name='ключ')
     role = models.CharField(max_length=20,
                             choices=USER_ROLES.items(), default=STUDENT,
                             verbose_name='роль')
@@ -47,4 +46,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name = 'пользователя'
+        verbose_name_plural = 'пользователи'
 

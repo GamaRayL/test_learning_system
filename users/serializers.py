@@ -1,5 +1,8 @@
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
+from products.models import Product
+from products.serializers import ProductSerializer
 from users.models import User
 
 
@@ -15,8 +18,18 @@ class UserSerializer(ModelSerializer):
         fields = ('email', 'password')
 
 
-class UserDetailSerializer(BaseUserSerializer):
-    pass
+class UserDetailSerializer(ModelSerializer):
+    products = SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'products')
+
+    @staticmethod
+    def get_products(obj):
+        products = obj.products.all()
+        serialized_products = ProductSerializer(products, many=True).data
+        return serialized_products
 
 
 class UserUpdateSerializer(BaseUserSerializer):

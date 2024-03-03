@@ -2,7 +2,6 @@ from users.models import User
 from main.models import Product
 from rest_framework import status
 from django.http import JsonResponse
-from users.services import assign_user_to_group
 from main.serializers.product_serializer import ProductSerializer
 from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView
 
@@ -39,7 +38,6 @@ def add_user_to_product(request, pk_product, pk_user):
 
         product.users.add(user)
 
-        assign_user_to_group(product, user)
         return JsonResponse({'success': f'Пользователь ({user.email}) успешно добавлен к продукту: {product.name}!'})
     except Product.DoesNotExist:
         return JsonResponse(
